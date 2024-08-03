@@ -1,0 +1,27 @@
+###mostrar a la pagina inicial 
+
+http://localhost:3000 
+
+###mostrar todos los productos 
+
+GET http://localhost:3000/granjas
+
+###mostrar un producto por su id 
+
+GET http://localhost:3000/granja/668f86e6b0930f575e8759c4
+
+###mostrar el producto por su nombre
+
+GET http://localhost:3000/granjas/busqueda/Manzana
+
+###crear un nuevo producto
+
+POST http://localhost:3000/granjas
+
+###actualizar un producto por su id
+
+PUT http://localhost:3000/granjas/:id
+
+###eliminar un producto por su id
+
+DELETE http://localhost:3000/granjas/:id

@@ -1,16 +1,3 @@
-// const mongoose = require('mongoose');
-
-// const ProductoSchema = new mongoose.Schema({
-//   codigo: Number,
-//   nombre: String,
-//   precio: Number,
-//   categorias: String,
-// });
-
-// const products = mongoose.model('granjas', ProductoSchema);
-
-// module.exports = products
-
 const mongoose = require('mongoose')
 process.loadEnvFile()
 
