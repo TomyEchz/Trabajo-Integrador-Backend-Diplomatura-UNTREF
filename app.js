@@ -31,7 +31,6 @@ app.get('/granjas', async (req, res) => {
 });
 
 //obtener un producto por ID
-
 app.get('/granja/:id', async (req, res) => {
   const { id } = req.params;
 
@@ -48,45 +47,51 @@ app.get('/granja/:id', async (req, res) => {
     res.status(500).json('Error en la obtención de los productos');
   }
 });
+
 //filtrar productos por nombre
 app.get('/granjas/busqueda/:nombre', async (req, res) => {
+  const { nombre } = req.params;
+console.log("nombre a imprimir " + nombre);
   try {
-    const producto = await Granja.find({ nombre: req.params.nombre });
-    if (producto.length === 0) return res.status(404).json('No hay productos con ese nombre');
+    const productos = await Granja.find({ "nombre": { $regex: nombre, $options: "i" } });
+    if (productos.length === 0) return res.status(404).json('No hay productos con ese nombre');
     res.status(200).json(productos);
   } catch (error) {
     res.status(500).json('Error en la búsqueda de productos');
   }
 });
+
 //agregar un producto
-app.post('/granjas/:id', async (req, res) => {
+app.post('/granjas', async (req, res) => {
+  const newProduct = new Granja(req.body);
   try {
-    const { nombre, precio, descripcion } = req.body;
-    const producto = await granjas.findByIdAndUpdate(req.params.id, { nombre, precio, descripcion }, { new: true });
-    res.json(producto);
-  } catch (error) {
+    await newProduct.save();
+    res.status(201).json(newProduct);
+  } catch {
     res.status(500).json({mensjae: 'error al agregar el producto'});
   }
 });
 
 //modificar un producto
-
 app.patch('/granjas/:id', async (req, res) => {
+  const { id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'ID no válido' });
+  }
   try {
-    const { nombre, precio, descripcion } = req.body;
-    const producto = await granjas.findByIdAndUpdate(req.params.id, { nombre, precio, descripcion }, { new: true });
-    if (!producto) return res.status(404).json('Producto no encontrado');
-    res.json(producto);
+    const granja = await Granja.findByIdAndUpdate(id, req.body, { new: true });
+    if (!granja) return res.status(404).json('Producto no encontrado');
+    res.status(201).json({ mensaje: "producto actializado", granja});
   } catch (error) {
-    res.status(500).json({mensjae: 'Error al modificar el producto'});
+    res.status(500).json({mensaje: 'Error al modificar el producto'});
   }
 });
 
 //eliminar un producto
-
 app.delete('/granjas/:id', async (req, res) => {
+  const {id} = req.params
   try {
-    const producto = await granjas.findByIdAndDelete(req.params.id);
+    const producto = await Granja.findByIdAndDelete(id);
     if (!producto) return res.status(404).json('Producto no encontrado');
     res.json({mensaje: 'Producto eliminado'});
   } catch (error) {
@@ -95,7 +100,6 @@ app.delete('/granjas/:id', async (req, res) => {
 });
 
 //manejo de errores en la estructura de las solicitudes y respuestas
-
 app.use((err, req, res, next) => {
  res.status(500).json({ mensaje: 'error en el servidor'});
 });
