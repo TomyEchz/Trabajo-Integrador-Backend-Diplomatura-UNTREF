@@ -1,0 +1,40 @@
+###mostrar a la pagina inicial 
+
+http://localhost:3000 
+
+###mostrar todos los productos 
+
+GET http://localhost:3000/granjas
+
+###mostrar un producto por su id 
+
+GET http://localhost:3000/granja/668f86e6b0930f575e8759c4
+
+###mostrar el producto por su nombre
+
+GET http://localhost:3000/granjas/busqueda/Man
+
+###crear un nuevo producto
+
+POST http://localhost:3000/granjas
+Content-Type: application/json
+
+{
+  "codigo": 31,
+  "nombre": "Manzana verde",
+  "precio": 1.99,
+  "categoria": "fruta"
+}
+
+###actualizar un producto 
+
+PATCH http://localhost:3000/granjas/668f86e6b0930f575e8759c6
+Content-Type: application/json
+
+{
+ "precio": 1.49
+}
+
+###eliminar un producto 
+
+DELETE http://localhost:3000/granjas/66ae7fbc07e0d7e38d42aee0
